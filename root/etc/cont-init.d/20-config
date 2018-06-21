@@ -1,0 +1,35 @@
+#!/usr/bin/with-contenv bash
+
+CWD=${PWD};
+
+
+
+dropbox_config() {
+    mkdir -p \
+        /config/.dropbox \
+        /dropbox
+    if [[ ! -h /root/.dropbox ]]; then
+        echo "**** (dropbox_config) Binding .dropbox config dir ****";
+        rm /root/.dropbox
+        ln -s /config/.dropbox/ /root/.dropbox;
+    fi
+    if [[ ! -h /root/Dropbox ]]; then
+        echo "**** (dropbox_config) Binding main Dropbox dir ****";
+        rm -f /root/Dropbox;
+        ln -s /dropbox /root/Dropbox;
+    fi
+    chown -R $PUID:$PGID \
+        /config/.dropbox \
+        /dropbox
+}
+permissions_config() {
+    echo "**** (permissions_config) Settings permissions ****";
+    chown -R $PUID:$PGID \
+        /config
+    chmod -R g+w \
+        /config/.dropbox/* \
+        /dropbox/*
+}
+
+dropbox_config;
+permissions_config;
