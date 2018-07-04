@@ -9,7 +9,6 @@ RUN \
         apt-get update \
         && \
         apt-get install -y \
-            openssh-server \
             python \
             wget \
             tar \
@@ -17,16 +16,24 @@ RUN \
     echo "**** install dropbox package ****" && \
         cd /tmp \
         && wget --quiet -O /tmp/dropboxd.tar.gz "https://www.dropbox.com/download/?plat=lnx.x86_64" \
-        && tar -xf /tmp/dropboxd.tar.gz -C /root \
+        && tar -xf /tmp/dropboxd.tar.gz -C /opt \
+        && chmod -Rf a+w /opt/.dropbox-dist \
         && mkdir -p /bin \
-        && wget -O /bin/dropbox.py "http://www.dropbox.com/download?dl=packages/dropbox.py" \
+        && wget --quiet -O /bin/dropbox.py "http://www.dropbox.com/download?dl=packages/dropbox.py" \
         && chmod 755 /bin/dropbox.py \
-        && rm /tmp/*
-
-### Cleanup
-RUN rm -rf /var/lib/apt/lists/*
+        && \
+    echo "**** cleanup ****" && \
+        rm -f /tmp/* \
+        && rm -rf /var/lib/apt/lists/*
 
 ### Add local files
 COPY root/ /
 
-VOLUME /config/
+### Set environment settings
+ENV \
+    S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
+    HOME="/config"
+
+VOLUME \
+    /config/ \
+    /config/Dropbox

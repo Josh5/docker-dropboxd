@@ -1,2 +1,2 @@
 #!/usr/bin/with-contenv bash
-exec /root/.dropbox-dist/dropboxd
+exec s6-setuidgid docker /opt/.dropbox-dist/dropboxd
