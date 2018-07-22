@@ -1,4 +1,4 @@
-FROM josh5/base-ubuntu16.04
+FROM josh5/base-ubuntu:16.04
 MAINTAINER Josh.5 "jsunnex@gmail.com"
 
 
