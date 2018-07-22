@@ -1,13 +1,6 @@
-
 # josh5/dropboxd
 
-Enviornment for running dropbox headless
-
-### Builds "josh5/dropboxd"
-
-```
-docker build -t josh5/dropboxd .
-```
+Environment for running dropbox headless
 
 
 ## Usage
@@ -20,7 +13,7 @@ DROPBOX_DIR=/home/${USER}/Dropbox
 docker create --name=${PROJECT_NAME} \
  -t -i \
 -v "${CONFIG_DIR}":"/config":rw \
--v "${DROPBOX_DIR}":"/dropbox":rw \
+-v "${DROPBOX_DIR}":"/config/Dropbox":rw \
 josh5/dropboxd
  
 docker start ${PROJECT_NAME}
