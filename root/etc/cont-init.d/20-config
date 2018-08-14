@@ -7,7 +7,9 @@ CWD=${PWD};
 permissions_config() {
     echo "**** (permissions_config) Settings permissions ****";
     chown -R $PUID:$PGID \
-        /config
+        /config/etc \
+        /config/.dropbox \
+        /config/.dropbox-dist
 }
 
 permissions_config;
