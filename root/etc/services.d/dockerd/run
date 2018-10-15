@@ -1,4 +1,7 @@
 #!/usr/bin/with-contenv bash
+
+export HOME=/config
+
 if [[ -e /config/.dropbox-dist/dropboxd ]]; then 
         exec s6-setuidgid docker /config/.dropbox-dist/dropboxd;
 else

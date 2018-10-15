@@ -11,26 +11,26 @@ RUN \
         && \
         apt-get install -y \
             python \
-            wget \
-            tar \
+            libglib2.0-0 \
         && \
     echo "**** cleanup ****" \
         && \
         rm -rf /var/lib/apt/lists/*
 
-### Set environment settings
-ENV \
-    S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
-    HOME="/config"
 
-ARG DOWNLOAD_URL=https://clientupdates.dropboxstatic.com/dbx-releng/client/dropbox-lnx.x86_64-58.4.92.tar.gz
+### Set environment settings
+ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
+
+
 ### Fetch and install dropbox
 RUN \
+    export DOWNLOAD_URL=https://clientupdates.dropboxstatic.com/dbx-releng/client/dropbox-lnx.x86_64-59.4.93.tar.gz \
+    && \
     echo "**** install dropbox package ****" \
         && \
         cd /tmp \
         && \
-        wget --quiet -O /tmp/dropboxd.tar.gz "${DOWNLOAD_URL}" \
+        curl -SL "${DOWNLOAD_URL}" -o /tmp/dropboxd.tar.gz \
         && \
         tar -xf /tmp/dropboxd.tar.gz -C /opt \
         && \
@@ -38,20 +38,18 @@ RUN \
         && \
         mkdir -p /bin \
         && \
-        wget --quiet -O /bin/dropbox.py "http://www.dropbox.com/download?dl=packages/dropbox.py" \
+        curl -SL "http://www.dropbox.com/download?dl=packages/dropbox.py" -o /bin/dropbox.py \
         && \
         chmod 755 /bin/dropbox.py \
-        && \
-    echo "**** set permissions ****" \
-        && \
-        chown -Rf docker:users /config \
-        && \
+    && \
     echo "**** cleanup ****" \
         && \
         rm -f /tmp/*
 
+
 ### Add local files
 COPY root/ /
+
 
 VOLUME \
     /config/ \
